@@ -1,330 +1,527 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Palavra Cruzada - Rubrum Astra</title>
-<link rel="stylesheet" href="styles.css" />
-<style>
-  :root { --cell-size: 32px; --gap: 3px; }
-  body { margin:0; font-family:Arial, Helvetica, sans-serif; background:#111; color:#eee; text-align:center; }
-  header { padding:18px 12px 6px; }
-  h1{ margin:0; font-size:1.6rem; }
-  p{ margin:6px 0 0; color:#cfcfcf; }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Palavra Cruzada - Rubrum Astra</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root {
+      --cell-size: 32px;
+      --gap: 3px;
+    }
 
-  .board-wrap{ max-width:980px; margin:18px auto 40px; padding:0 12px; }
-  .grid {
-    width:100%;
-    display:grid;
-    grid-template-columns: repeat(12, var(--cell-size));
-    gap: var(--gap);
-    justify-content:center;
-    margin: 18px auto;
-  }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #111;
+      color: #eee;
+      text-align: center;
+    }
 
-  input.crosscell {
-    width: var(--cell-size);
-    height: var(--cell-size);
-    box-sizing:border-box;
-    padding:0;
-    margin:0;
-    border-radius:6px;
-    border:1px solid #444;
-    background:#222;
-    color:#fff;
-    text-align:center;
-    font-size: calc(var(--cell-size) * 0.55);
-    text-transform:uppercase;
-    outline:none;
-  }
+    header {
+      padding: 18px 12px 6px;
+    }
 
-  .cell-block {
-    width: var(--cell-size);
-    height: var(--cell-size);
-    background:#000;
-    border-radius:6px;
-  }
+    h1 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
 
-  .cell-number {
-    position:relative;
-    display:block;
-    width:var(--cell-size);
-    height:var(--cell-size);
-    font-size:10px;
-    color:#bbb;
-    text-align:left;
-    padding:3px;
-    box-sizing:border-box;
-  }
+    p {
+      margin: 6px 0 0;
+      color: #cfcfcf;
+    }
 
-  .controls { margin: 12px 0 30px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
-  button { background:crimson; color:#fff; border: none; padding:10px 14px; border-radius:6px; cursor:pointer; font-weight:600;}
-  button.secondary{ background:#444; }
-  button:disabled{opacity:0.6; cursor:not-allowed}
+    .board-wrap {
+      max-width: 980px;
+      margin: 18px auto 40px;
+      padding: 0 12px;
+    }
 
-  .clues { text-align:left; max-width:980px; margin:0 auto 40px; padding:0 12px; color:#ddd; }
-  .clue-group{ display:flex; gap:18px; flex-wrap:wrap; }
-  .clues ol { padding-left:18px; margin:6px 0 18px; }
-  .status { margin-top:10px; color:#ffd9d9; }
-  .clues ol li {
-    margin-bottom: 8px; 
-}
+    .grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(12, var(--cell-size));
+      gap: var(--gap);
+      justify-content: center;
+      margin: 18px auto;
+    }
 
-  /* Responsividade */
-  @media (max-width:480px){
-    :root { --cell-size: 22px; --gap:2px; }
-    h1{ font-size:1.3rem; }
-    .clues { font-size:0.95rem; }
-    button{ font-size:0.95rem; padding:10px 12px; }
-  }
-  @media (min-width:481px) and (max-width:768px){
-    :root { --cell-size: 26px; }
-  }
-  @media (min-width:1200px){
-    :root { --cell-size:36px; }
-  }
+    input.crosscell {
+      width: var(--cell-size);
+      height: var(--cell-size);
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: #222;
+      color: #fff;
+      text-align: center;
+      font-size: calc(var(--cell-size) * 0.55);
+      text-transform: uppercase;
+      outline: none;
+    }
 
-  /* small helper for correct/incorrect highlight */
-  .correct { background: linear-gradient(180deg,#183,#0a6); color:#042; font-weight:700; }
-  .incorrect { animation: shake 0.18s; border:2px solid #c33; }
-  @keyframes shake { 0%{transform:translateX(-2px)}50%{transform:translateX(2px)}100%{transform:translateX(0)} }
-</style>
+    .cell-block {
+      width: var(--cell-size);
+      height: var(--cell-size);
+      background: #000;
+      border-radius: 6px;
+    }
+
+    .cell-number {
+      position: relative;
+      display: block;
+      width: var(--cell-size);
+      height: var(--cell-size);
+      font-size: 10px;
+      color: #bbb;
+      text-align: left;
+      padding: 3px;
+      box-sizing: border-box;
+    }
+
+    .controls {
+      margin: 12px 0 30px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: crimson;
+      color: #fff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button.secondary {
+      background: #444;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed
+    }
+
+    .clues {
+      text-align: left;
+      max-width: 980px;
+      margin: 0 auto 40px;
+      padding: 0 12px;
+      color: #ddd;
+    }
+
+    .clue-group {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .clues ol {
+      padding-left: 18px;
+      margin: 6px 0 18px;
+    }
+
+    .status {
+      margin-top: 10px;
+      color: #ffd9d9;
+    }
+
+    .clues ol li {
+      margin-bottom: 8px;
+    }
+
+    /* Responsividade */
+    @media (max-width:480px) {
+      :root {
+        --cell-size: 22px;
+        --gap: 2px;
+      }
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      .clues {
+        font-size: 0.95rem;
+      }
+
+      button {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+      }
+    }
+
+    @media (min-width:481px) and (max-width:768px) {
+      :root {
+        --cell-size: 26px;
+      }
+    }
+
+    @media (min-width:1200px) {
+      :root {
+        --cell-size: 36px;
+      }
+    }
+
+    /* small helper for correct/incorrect highlight */
+    .correct {
+      background: linear-gradient(180deg, #183, #0a6);
+      color: #042;
+      font-weight: 700;
+    }
+
+    .incorrect {
+      animation: shake 0.18s;
+      border: 2px solid #c33;
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translateX(-2px)
+      }
+
+      50% {
+        transform: translateX(2px)
+      }
+
+      100% {
+        transform: translateX(0)
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header>
-  <h1>CHARADA — Casa de Praia</h1>
-  <p>Complete as palavras para descobrir o poema.</p>
-</header>
+  <header>
+    <h1>CHARADA — Casa de Praia</h1>
+    <p>Complete as palavras para descobrir o poema.</p>
+  </header>
 
-<div class="board-wrap">
-  <div id="grid" class="grid" aria-label="Tabuleiro da palavra cruzada"></div>
+  <div class="board-wrap">
+    <div id="grid" class="grid" aria-label="Tabuleiro da palavra cruzada"></div>
 
-  <div class="controls" role="region" aria-label="Controles">
-    <button id="checkBtn">Finalizar / Validar</button>
-    <div id="status" class="status" aria-live="polite"></div>
-  </div>
+    <div class="controls" role="region" aria-label="Controles">
+      <button id="checkBtn">Finalizar / Validar</button>
+      <div id="status" class="status" aria-live="polite"></div>
+    </div>
 
-  <div class="clues" id="clues">
-    <h2>Dicas</h2>
-    <div class="clue-group">
-      <div style="flex:1 1 320px">
-        <h3>Horizontais</h3>
-        <ol id="acrossList">
-          <!-- preenchido por JS -->
-        </ol>
-      </div>
-      <div style="flex:1 1 320px">
-        <h3>Verticais</h3>
-        <ol id="downList">
-          <!-- preenchido por JS -->
-        </ol>
+    <div class="clues" id="clues">
+      <h2>Dicas</h2>
+      <div class="clue-group">
+        <div style="flex:1 1 320px">
+          <h3>Horizontais</h3>
+          <ol id="acrossList">
+            <!-- preenchido por JS -->
+          </ol>
+        </div>
+        <div style="flex:1 1 320px">
+          <h3>Verticais</h3>
+          <ol id="downList">
+            <!-- preenchido por JS -->
+          </ol>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script>
-/*
- Responsive crossword with configurable word placement.
- Grid: 12x12
- Cell indexing: row 0..11, col 0..11
- Each word definition: {number, word, clue, row, col, dir} dir: 'across' or 'down'
-*/
+  <script>
+    /*
+     Responsive crossword with configurable word placement.
+     Grid: 12x12
+     Cell indexing: row 0..11, col 0..11
+     Each word definition: {number, word, clue, row, col, dir} dir: 'across' or 'down'
+    */
 
-function getCookie(cname){
-  const name = cname + "=";
-  const ca = document.cookie.split(';');
-  for(let c of ca){ c = c.trim(); if(c.indexOf(name)===0) return c.substring(name.length); }
-  return "";
-}
-if (!getCookie("rubrumastra_player")) {
-  window.location.href = "index.html";
-}
-
-const words = [
-  // number, word, clue, row, col, dir
-  {number:1, word:"IDENTIDADE", clue:"X = X", row:0, col:1, dir:"across"},
-  {number:2, word:"DEIDARA", clue:"Katsu!", row:0, col:9, dir:"down"}, // placeholder — ajuste
-  {number:3, word:"CHASE", clue:"Essas patas defendem as leis!", row:4, col:3, dir:"down"}, // ajustar
-  {number:4, word:"ZARATUSTRA", clue:"Grande astro! que seria da tua felicidade se te faltassem aqueles a quem iluminas", row:6, col:0, dir:"across"},
-  {number:5, word:"MINECRAFT", clue:"De cubo em cudo, nasce um mundo inteiro", row:10, col:2, dir:"across"}, // placeholder
-  {number:6, word:"ESPELHO", clue:"OHLEPSE", row:8, col:3, dir:"across"}, // may be across or reversed
-  {number:7, word:"ZANZARA", clue:"Mosquitini", row:3, col:0, dir:"down"}, // placeholder
-  {number:8, word:"RESPIRACAO", clue:"Eu sou leve como uma pena, mas o humano mais forte não consegue me segurar por muito tempo. Embora eu possa ser soprado para longe, eu não sou um objeto.", row:9, col:1, dir:"across"},
-  {number:9, word:"URANO", clue:"Gigante azul no oitavo lugar?", row:4, col:7, dir:"across"}
-];
-
-const ROWS = 12, COLS = 12;
-const gridEl = document.getElementById('grid');
-const cells = []; // will hold refs
-
-// build empty grid structure (12x12)
-for (let r=0;r<ROWS;r++){
-  for (let c=0;c<COLS;c++){
-    const idx = r*COLS + c;
-    const wrapper = document.createElement('div');
-    // by default create an input (empty)
-    const input = document.createElement('input');
-    input.setAttribute('maxlength','1');
-    input.setAttribute('aria-label', `linha ${r+1} coluna ${c+1}`);
-    input.className = 'crosscell';
-    input.dataset.r = r; input.dataset.c = c;
-    input.addEventListener('input', onInput);
-    input.addEventListener('keydown', onKeyDown);
-    wrapper.appendChild(input);
-    gridEl.appendChild(wrapper);
-    cells.push({el:input, wrapper});
-  }
-}
-
-// helper to get cell index
-function cellIndex(row,col){ return row*COLS + col; }
-
-// place black blocks where no word occupies? We'll mark blocks after placing words
-const occupied = new Array(ROWS*COLS).fill(false);
-
-// place words on board and mark starting numbers
-for (const w of words){
-  const L = w.word.length;
-  for (let i=0;i<L;i++){
-    const r = (w.dir === 'across') ? w.row : w.row + i;
-    const c = (w.dir === 'across') ? w.col + i : w.col;
-    if (r<0||r>=ROWS||c<0||c>=COLS) continue; // out of bounds — ignore for now
-    const idx = cellIndex(r,c);
-    occupied[idx] = true;
-    // store expected letter
-    cells[idx].expected = w.word[i].toUpperCase();
-    // mark number on the first letter
-    if (i===0) {
-      cells[idx].number = w.number;
-      // place a small number label overlay
-      const numLabel = document.createElement('div');
-      numLabel.className = 'cell-number';
-      numLabel.style.position = 'absolute';
-      numLabel.style.pointerEvents = 'none';
-      numLabel.style.width = 'var(--cell-size)';
-      numLabel.style.height = 'var(--cell-size)';
-      numLabel.style.top = '0';
-      numLabel.style.left = '0';
-      numLabel.style.boxSizing = 'border-box';
-      numLabel.style.padding = '3px';
-      numLabel.innerHTML = `<small style="color:#aaa">${w.number}</small>`;
-      cells[idx].wrapper.style.position = 'relative';
-      cells[idx].wrapper.appendChild(numLabel);
+    function getCookie(cname) {
+      const name = cname + "=";
+      const ca = document.cookie.split(';');
+      for (let c of ca) { c = c.trim(); if (c.indexOf(name) === 0) return c.substring(name.length); }
+      return "";
     }
-  }
-}
-
-// convert unused cells to blocks
-for (let i=0;i<cells.length;i++){
-  if (!occupied[i]) {
-    // replace input with block
-    const block = document.createElement('div');
-    block.className = 'cell-block';
-    // clear wrapper and append block
-    const wrapper = cells[i].wrapper;
-    wrapper.innerHTML = '';
-    wrapper.appendChild(block);
-    cells[i].isBlock = true;
-  } else {
-    // ensure input exists (in case replaced)
-    // keep input reference
-  }
-}
-
-// populate clue lists
-const acrossList = document.getElementById('acrossList');
-const downList = document.getElementById('downList');
-for (const w of words){
-  const li = document.createElement('li');
-  li.innerText = `${w.clue}`;
-  if (w.dir === 'across') acrossList.appendChild(li); else downList.appendChild(li);
-}
-
-// keyboard navigation and input handler
-function onInput(e){
-  const inp = e.target;
-  inp.value = inp.value.toUpperCase().replace(/[^A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÇÑ]/g,'').slice(0,1);
-  // move to next cell (to the right) if available
-  const r = parseInt(inp.dataset.r), c = parseInt(inp.dataset.c);
-  // find next non-block cell in same row to right
-  for (let nc=c+1; nc<COLS; nc++){
-    const next = cells[cellIndex(r,nc)];
-    if (next && !next.isBlock) { next.el.focus(); break; }
-  }
-}
-
-function onKeyDown(e){
-  const inp = e.target;
-  const r = parseInt(inp.dataset.r), c = parseInt(inp.dataset.c);
-  if (e.key === 'ArrowRight'){ e.preventDefault(); for(let nc=c+1;nc<COLS;nc++){ const n=cells[cellIndex(r,nc)]; if(!n.isBlock){n.el.focus();break;} } }
-  if (e.key === 'ArrowLeft'){ e.preventDefault(); for(let nc=c-1;nc>=0;nc--){ const n=cells[cellIndex(r,nc)]; if(!n.isBlock){n.el.focus();break;} } }
-  if (e.key === 'ArrowDown'){ e.preventDefault(); for(let nr=r+1;nr<ROWS;nr++){ const n=cells[cellIndex(nr,c)]; if(!n.isBlock){n.el.focus();break;} } }
-  if (e.key === 'ArrowUp'){ e.preventDefault(); for(let nr=r-1;nr>=0;nr--){ const n=cells[cellIndex(nr,c)]; if(!n.isBlock){n.el.focus();break;} } }
-  if (e.key === 'Backspace' && !e.target.value){ // move left
-    e.preventDefault();
-    for (let nc=c-1; nc>=0; nc--){ const n=cells[cellIndex(r,nc)]; if(!n.isBlock){ n.el.focus(); n.el.value=''; break; } }
-  }
-}
-
-/* Validate all words */
-function validateAll(showDetails=true){
-  let ok = true;
-  const wrongWords = [];
-  for (const w of words){
-    const letters = [];
-    for (let i=0;i<w.word.length;i++){
-      const r = (w.dir === 'across') ? w.row : w.row + i;
-      const c = (w.dir === 'across') ? w.col + i : w.col;
-      const idx = cellIndex(r,c);
-      const cell = cells[idx];
-      const val = (cell && cell.el && cell.el.value) ? cell.el.value.toUpperCase() : '';
-      letters.push(val || '');
+    if (!getCookie("rubrumastra_player")) {
+      window.location.href = "index.html";
     }
-    const got = letters.join('');
-    if (got.length !== w.word.length || got !== w.word.toUpperCase()){
-      ok = false;
-      wrongWords.push({number:w.number, expected:w.word, got});
-      // mark letter cells red-ish
-      for (let i=0;i<w.word.length;i++){
-        const r = (w.dir === 'across') ? w.row : w.row + i;
-        const c = (w.dir === 'across') ? w.col + i : w.col;
-        const idx = cellIndex(r,c);
-        const cell = cells[idx];
-        if (cell && cell.el) {
-          cell.el.classList.add('incorrect');
-          setTimeout(()=>cell.el.classList.remove('incorrect'), 500);
-        }
+
+    const words = [
+      // number, word, clue, row, col, dir
+      { number: 1, word: "IDENTIDADE", clue: "X = X", row: 0, col: 1, dir: "across" },
+      { number: 2, word: "DEIDARA", clue: "Katsu!", row: 0, col: 9, dir: "down" }, // placeholder — ajuste
+      { number: 3, word: "CHASE", clue: "Essas patas defendem as leis!", row: 4, col: 3, dir: "down" }, // ajustar
+      { number: 4, word: "ZARATUSTRA", clue: "Grande astro! que seria da tua felicidade se te faltassem aqueles a quem iluminas", row: 6, col: 0, dir: "across" },
+      { number: 5, word: "MINECRAFT", clue: "De cubo em cudo, nasce um mundo inteiro", row: 10, col: 2, dir: "across" }, // placeholder
+      { number: 6, word: "ESPELHO", clue: "OHLEPSE", row: 8, col: 3, dir: "across" }, // may be across or reversed
+      { number: 7, word: "ZANZARA", clue: "Mosquitini", row: 3, col: 0, dir: "down" }, // placeholder
+      { number: 8, word: "RESPIRACAO", clue: "Eu sou leve como uma pena, mas o humano mais forte não consegue me segurar por muito tempo. Embora eu possa ser soprado para longe, eu não sou um objeto.", row: 9, col: 1, dir: "across" },
+      { number: 9, word: "URANO", clue: "Gigante azul no oitavo lugar?", row: 4, col: 7, dir: "across" }
+    ];
+
+    const ROWS = 12, COLS = 12;
+    const gridEl = document.getElementById('grid');
+    const cells = []; // will hold refs
+
+    // build empty grid structure (12x12)
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const idx = r * COLS + c;
+        const wrapper = document.createElement('div');
+        // by default create an input (empty)
+        const input = document.createElement('input');
+        input.setAttribute('maxlength', '1');
+        input.setAttribute('aria-label', `linha ${r + 1} coluna ${c + 1}`);
+        input.className = 'crosscell';
+        input.dataset.r = r; input.dataset.c = c;
+        input.addEventListener('input', onInput);
+        input.addEventListener('keydown', onKeyDown);
+        wrapper.appendChild(input);
+        gridEl.appendChild(wrapper);
+        cells.push({ el: input, wrapper });
       }
-    } else {
-      // mark cells green briefly
-      for (let i=0;i<w.word.length;i++){
+    }
+
+    // helper to get cell index
+    function cellIndex(row, col) { return row * COLS + col; }
+
+    // place black blocks where no word occupies? We'll mark blocks after placing words
+    const occupied = new Array(ROWS * COLS).fill(false);
+    const cellWordMap = new Array(ROWS * COLS).fill(null).map(() => ({ across: null, down: null }));
+
+
+    // place words on board and mark starting numbers
+    for (const w of words) {
+      const L = w.word.length;
+      for (let i = 0; i < L; i++) {
         const r = (w.dir === 'across') ? w.row : w.row + i;
         const c = (w.dir === 'across') ? w.col + i : w.col;
-        const idx = cellIndex(r,c);
-        const cell = cells[idx];
-        if (cell && cell.el) {
-          cell.el.classList.add('correct');
-          setTimeout(()=>cell.el.classList.remove('correct'), 700);
+        if (r < 0 || r >= ROWS || c < 0 || c >= COLS) continue; // out of bounds — ignore for now
+        const idx = cellIndex(r, c);
+        occupied[idx] = true;
+        // store expected letter
+        cells[idx].expected = w.word[i].toUpperCase();
+
+        // Map word to cell for determining next focus direction
+        if (w.dir === 'across') {
+          cellWordMap[idx].across = w.number;
+        } else {
+          cellWordMap[idx].down = w.number;
+        }
+
+        // mark number on the first letter
+        if (i === 0) {
+          cells[idx].number = w.number;
+          // place a small number label overlay
+          const numLabel = document.createElement('div');
+          numLabel.className = 'cell-number';
+          numLabel.style.position = 'absolute';
+          numLabel.style.pointerEvents = 'none';
+          numLabel.style.width = 'var(--cell-size)';
+          numLabel.style.height = 'var(--cell-size)';
+          numLabel.style.top = '0';
+          numLabel.style.left = '0';
+          numLabel.style.boxSizing = 'border-box';
+          numLabel.style.padding = '3px';
+          numLabel.innerHTML = `<small style="color:#aaa">${w.number}</small>`;
+          cells[idx].wrapper.style.position = 'relative';
+          cells[idx].wrapper.appendChild(numLabel);
         }
       }
     }
-  }
-  const status = document.getElementById('status');
-  if (ok){
-    status.textContent = 'Parabéns — todas as palavras estão corretas!';
-  } else {
-    status.textContent = `Existem ${wrongWords.length} palavras incorretas. Confira as dicas ou revele as respostas.`;
-  }
-  return {ok, wrongWords};
-}
 
-/* Attach buttons */
-document.getElementById('checkBtn').addEventListener('click', ()=>validateAll());
+    // convert unused cells to blocks
+    for (let i = 0; i < cells.length; i++) {
+      if (!occupied[i]) {
+        // replace input with block
+        const block = document.createElement('div');
+        block.className = 'cell-block';
+        // clear wrapper and append block
+        const wrapper = cells[i].wrapper;
+        wrapper.innerHTML = '';
+        wrapper.appendChild(block);
+        cells[i].isBlock = true;
+      } else {
+        // ensure input exists (in case replaced)
+        // keep input reference
+      }
+    }
 
-/* initial focus on first non-block cell */
-for (const c of cells){ if(!c.isBlock){ c.el.focus(); break; } }
+    // populate clue lists
+    const acrossList = document.getElementById('acrossList');
+    const downList = document.getElementById('downList');
+    for (const w of words) {
+      const li = document.createElement('li');
+      li.setAttribute('value', w.number); // Usa o número da palavra como índice da lista
+      li.innerText = w.clue; // Adiciona APENAS a dica
+      if (w.dir === 'across') acrossList.appendChild(li); else downList.appendChild(li);
+    }
 
-</script>
+    // Global variable to track current active direction (across/down)
+    let currentDirection = 'across';
+
+    function focusNextCell(r, c, direction) {
+      if (direction === 'across') {
+        for (let nc = c + 1; nc < COLS; nc++) {
+          const next = cells[cellIndex(r, nc)];
+          if (next && !next.isBlock) {
+            next.el.focus();
+            return true;
+          }
+        }
+      } else if (direction === 'down') {
+        for (let nr = r + 1; nr < ROWS; nr++) {
+          const next = cells[cellIndex(nr, c)];
+          if (next && !next.isBlock) {
+            next.el.focus();
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    // KEY CORRECTION: onInput now tries to follow the current direction
+    function onInput(e) {
+      const inp = e.target;
+      inp.value = inp.value.toUpperCase().replace(/[^A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÇÑ]/g, '').slice(0, 1);
+
+      const r = parseInt(inp.dataset.r), c = parseInt(inp.dataset.c);
+      const idx = cellIndex(r, c);
+      const cellData = cellWordMap[idx];
+
+      // Logic to determine next focus direction based on available words
+      // Default to 'across' if cell is part of 'across' word only
+      let nextDir = currentDirection;
+
+      // If the cell is the start/middle of both an across and a down word, prioritize the current direction.
+      if (currentDirection === 'across' && cellData.across !== null) {
+        // Stay across
+      } else if (currentDirection === 'down' && cellData.down !== null) {
+        // Stay down
+      } else if (cellData.across !== null) {
+        nextDir = 'across'; // Switch to across
+      } else if (cellData.down !== null) {
+        nextDir = 'down'; // Switch to down
+      }
+
+      currentDirection = nextDir;
+
+      focusNextCell(r, c, currentDirection);
+    }
+
+    // KEY CORRECTION: onKeyDown now toggles between across/down if both words exist
+    function onKeyDown(e) {
+      const inp = e.target;
+      const r = parseInt(inp.dataset.r), c = parseInt(inp.dataset.c);
+      const idx = cellIndex(r, c);
+      const cellData = cellWordMap[idx];
+
+      if (e.key === 'ArrowRight') { e.preventDefault(); focusNextCell(r, c, 'across'); currentDirection = 'across'; }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); for (let nc = c - 1; nc >= 0; nc--) { const n = cells[cellIndex(r, nc)]; if (!n.isBlock) { n.el.focus(); break; } } currentDirection = 'across'; }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); focusNextCell(r, c, 'down'); currentDirection = 'down'; }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); for (let nr = r - 1; nr >= 0; nr--) { const n = cells[cellIndex(nr, c)]; if (!n.isBlock) { n.el.focus(); break; } } currentDirection = 'down'; }
+      else if (e.key === ' ' || e.key === 'Shift') { // Space or Shift to toggle direction on intersection
+        if (cellData.across !== null && cellData.down !== null) {
+          e.preventDefault();
+          currentDirection = (currentDirection === 'across') ? 'down' : 'across';
+          // Optional: Visually indicate current direction
+          console.log("Direction toggled to:", currentDirection);
+        }
+      }
+      else if (e.key === 'Backspace' && !e.target.value) { // move backward based on current direction
+        e.preventDefault();
+        if (currentDirection === 'across') {
+          for (let nc = c - 1; nc >= 0; nc--) { const n = cells[cellIndex(r, nc)]; if (!n.isBlock) { n.el.focus(); n.el.value = ''; break; } }
+        } else { // down
+          for (let nr = r - 1; nr >= 0; nr--) { const n = cells[cellIndex(nr, c)]; if (!n.isBlock) { n.el.focus(); n.el.value = ''; break; } }
+        }
+      }
+    }
+
+    /* Validate all words */
+    function validateAll(showDetails = true) {
+      let ok = true;
+      const wrongWords = [];
+
+      // Limpa todas as classes 'correct' e 'incorrect' antes de revalidar
+      cells.forEach(cell => {
+        if (cell && cell.el) {
+          cell.el.classList.remove('correct', 'incorrect');
+        }
+      });
+
+      for (const w of words) {
+        const letters = [];
+        const wordCells = [];
+        for (let i = 0; i < w.word.length; i++) {
+          const r = (w.dir === 'across') ? w.row : w.row + i;
+          const c = (w.dir === 'across') ? w.col + i : w.col;
+          const idx = cellIndex(r, c);
+          const cell = cells[idx];
+          const val = (cell && cell.el && cell.el.value) ? cell.el.value.toUpperCase() : '';
+          letters.push(val || '');
+          wordCells.push(cell.el);
+        }
+        const got = letters.join('');
+
+        if (got.length !== w.word.length || got !== w.word.toUpperCase()) {
+          ok = false;
+          wrongWords.push({ number: w.number, expected: w.word, got });
+          // mark letter cells red-ish
+          wordCells.forEach(el => {
+            el.classList.add('incorrect');
+            setTimeout(() => el.classList.remove('incorrect'), 500);
+          });
+        } else {
+          // mark cells green briefly
+          wordCells.forEach(el => {
+            el.classList.add('correct');
+            setTimeout(() => el.classList.remove('correct'), 700);
+          });
+        }
+      }
+      const status = document.getElementById('status');
+      if (ok) {
+        status.textContent = 'Parabéns — todas as palavras estão corretas!';
+
+        // New: Show success modal and redirect
+        setTimeout(showSuccessModal, 800);
+
+      } else {
+        status.textContent = `Existem ${wrongWords.length} palavras incorretas. Confira as dicas.`;
+      }
+      return { ok, wrongWords };
+    }
+
+    /* New Function: Success Modal */
+    function showSuccessModal() {
+      // Basic modal using native JS confirm/alert for quick implementation
+      if (confirm("PARABÉNS! Você completou a charada com sucesso. Clique em OK para ver o poema.")) {
+        // Redirect to the next page as requested
+        window.location.href = "poema.html";
+      }
+    }
+
+
+    /* Attach buttons */
+    document.getElementById('checkBtn').addEventListener('click', () => validateAll());
+    // Note: The 'revealBtn' and its event listener were removed as the button is not in the HTML
+
+    /* initial focus on first non-block cell */
+    for (const c of cells) {
+      if (!c.isBlock) {
+        c.el.focus();
+        break;
+      }
+    }
+
+  </script>
 </body>
+
 </html>
