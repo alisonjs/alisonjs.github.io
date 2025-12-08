@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Palavra Cruzada - Rubrum Astra</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 30px);
+            gap: 2px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .cell {
+            width: 30px;
+            height: 30px;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .block {
+            background: #000;
+        }
+
+        #finish-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Desafio da Palavra Cruzada</h1>
+    <p>Complete todas as palavras para prosseguir.</p>
+
+
+    <div id="crossword" class="grid"></div>
+
+
+    <button id="finish-btn">Finalizar</button>
+
+
+    <script>
+        const crossword = document.getElementById("crossword");
+
+
+        // 12x12 vazio
+        for (let i = 0; i < 144; i++) {
+            const input = document.createElement("input");
+            input.maxLength = 1;
+            input.classList.add("cell");
+            crossword.appendChild(input);
+        }
+
+
+        document.getElementById("finish-btn").onclick = () => {
+            // Aqui futuramente você pode validar a palavra cruzada
+            window.location.href = "poema.html";
+        };
+    </script>
+</body>
+
+</html>

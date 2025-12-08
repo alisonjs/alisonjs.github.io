@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parabéns! - Rubrum Astra</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .success-box {
+            width: 80%;
+            max-width: 500px;
+            margin: 80px auto;
+            background: #1b1b1b;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="success-box">
+        <h1>✨ Parabéns! ✨</h1>
+        <p>Você solucionou a charada de Rubrum Astra.</p>
+        <p id="winner-name"></p>
+        <p>Seu nome foi registrado como vencedor.</p>
+    </div>
+
+
+    <script>
+        function getCookie(cname) {
+            let name = cname + "=";
+            let ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i].trim();
+                if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+            }
+            return "";
+        }
+
+
+        const winner = getCookie("rubrumastra_player");
+        document.getElementById("winner-name").textContent = "Vencedor: " + winner;
+
+
+        // Envio de e-mail via webhook simples
+        fetch("https://formsubmit.co/ajax/SEU_EMAIL_AQUI", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                message: `Novo vencedor: ${winner}`
+            })
+        });
+    </script>
+</body>
+
+</html>

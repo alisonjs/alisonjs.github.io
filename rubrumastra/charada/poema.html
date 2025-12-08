@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poema - Rubrum Astra</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .poema-box {
+            width: 80%;
+            max-width: 600px;
+            margin: 60px auto;
+            background: #1b1b1b;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #000;
+            line-height: 1.6;
+        }
+
+        textarea,
+        input {
+            width: 80%;
+            max-width: 300px;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Um Sussurro na Brisa</h1>
+
+
+    <div class="poema-box">
+        <p>
+            A brisa salgada que acalma<br>
+            Enquanto molho meus pés<br>
+            O barulho sussurra quão belo é<br>
+            O espetáculo do dia que aquece a alma<br><br>
+            <i>Onde a maré encontra repouso,<br>
+                estará o segredo final.</i>
+        </p>
+    </div>
+
+
+    <p>Digite a resposta final:</p>
+    <input type="text" id="final-answer" placeholder="Sua resposta" />
+    <br>
+    <button id="check-btn">Enviar</button>
+
+
+    <script>
+        const correctHash = "e29f9eb9a09fb7fd56bfb928319a3f91a39500a32060e6fddc72b0ab5ce9f5d2";
+
+        function sha256(str) {
+            return crypto.subtle.digest("SHA-256", new TextEncoder().encode(str))
+                .then(buf => Array.from(new Uint8Array(buf))
+                    .map(x => x.toString(16).padStart(2, '0'))
+                    .join('')
+                );
+        }
+
+        document.getElementById("check-btn").onclick = async () => {
+            const ans = document.getElementById("final-answer").value.trim().toLowerCase();
+            const ansHash = await sha256(ans);
+            if (ansHash === correctHash) {
+                window.location.href = "success.html";
+            } else {
+                alert("Resposta incorreta!");
+            }
+        };
+    </script>
+</body>
+
+</html>
