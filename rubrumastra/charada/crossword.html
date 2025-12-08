@@ -66,6 +66,9 @@
   .clue-group{ display:flex; gap:18px; flex-wrap:wrap; }
   .clues ol { padding-left:18px; margin:6px 0 18px; }
   .status { margin-top:10px; color:#ffd9d9; }
+  .clues ol li {
+    margin-bottom: 8px; 
+}
 
   /* Responsividade */
   @media (max-width:480px){
@@ -98,7 +101,6 @@
 
   <div class="controls" role="region" aria-label="Controles">
     <button id="checkBtn">Finalizar / Validar</button>
-    <button id="revealBtn" class="secondary">Mostrar Respostas</button>
     <div id="status" class="status" aria-live="polite"></div>
   </div>
 
@@ -139,30 +141,17 @@ if (!getCookie("rubrumastra_player")) {
   window.location.href = "index.html";
 }
 
-/* ========== CONFIGURAÇÃO DAS PALAVRAS ==========
-
-  Eu preenchi as palavras que consegui inferir:
-  1. IDENTIDADE
-  4. ZARATUSTRA
-  5. MINECRAFT
-  7. ESPELHO (colocado invertido para encaixar - pista: OHLEPSE)
-  9. FILHO (resposta do enigma)
-  10. URANO
-
-  As outras pistas (2,3,6,8) estão deixadas como placeholders — ajuste 'word' e 'position' abaixo quando souber
-*/
-
 const words = [
   // number, word, clue, row, col, dir
-  {number:1, word:"IDENTIDADE", clue:"1. X = X", row:0, col:1, dir:"across"},
-  {number:2, word:"DEIDARA", clue:"2. Katsu!", row:0, col:8, dir:"down"}, // placeholder — ajuste
-  {number:3, word:"CHASE", clue:"3. Essas patas defendem as leis!", row:4, col:3, dir:"down"}, // ajustar
-  {number:4, word:"ZARATUSTRA", clue:"5. Grande astro! que seria da tua felicidade se te faltassem aqueles a quem iluminas", row:6, col:0, dir:"across"},
-  {number:5, word:"MINECRAFT", clue:"6. De cubo em cudo, nasce um mundo inteiro", row:10, col:2, dir:"across"}, // placeholder
-  {number:6, word:"ESPELHO", clue:"7. OHLEPSE", row:3, col:8, dir:"across"}, // may be across or reversed
-  {number:7, word:"ZANZARA", clue:"8. Mosquitini", row:3, col:0, dir:"down"}, // placeholder
-  {number:8, word:"IRMAO", clue:"9. O pai do padre é o único filho do meu pai. O que o padre é meu?", row:0, col:1, dir:"down"},
-  {number:9, word:"URANO", clue:"10. Gigante azul no oitavo lugar?", row:4, col:7, dir:"across"}
+  {number:1, word:"IDENTIDADE", clue:"X = X", row:0, col:1, dir:"across"},
+  {number:2, word:"DEIDARA", clue:"Katsu!", row:0, col:9, dir:"down"}, // placeholder — ajuste
+  {number:3, word:"CHASE", clue:"Essas patas defendem as leis!", row:4, col:3, dir:"down"}, // ajustar
+  {number:4, word:"ZARATUSTRA", clue:"Grande astro! que seria da tua felicidade se te faltassem aqueles a quem iluminas", row:6, col:0, dir:"across"},
+  {number:5, word:"MINECRAFT", clue:"De cubo em cudo, nasce um mundo inteiro", row:10, col:2, dir:"across"}, // placeholder
+  {number:6, word:"ESPELHO", clue:"OHLEPSE", row:8, col:3, dir:"across"}, // may be across or reversed
+  {number:7, word:"ZANZARA", clue:"Mosquitini", row:3, col:0, dir:"down"}, // placeholder
+  {number:8, word:"RESPIRACAO", clue:"Eu sou leve como uma pena, mas o humano mais forte não consegue me segurar por muito tempo. Embora eu possa ser soprado para longe, eu não sou um objeto.", row:9, col:1, dir:"across"},
+  {number:9, word:"URANO", clue:"Gigante azul no oitavo lugar?", row:4, col:7, dir:"across"}
 ];
 
 const ROWS = 12, COLS = 12;
@@ -248,7 +237,7 @@ const acrossList = document.getElementById('acrossList');
 const downList = document.getElementById('downList');
 for (const w of words){
   const li = document.createElement('li');
-  li.innerText = `${w.number}. ${w.clue}`;
+  li.innerText = `${w.clue}`;
   if (w.dir === 'across') acrossList.appendChild(li); else downList.appendChild(li);
 }
 
@@ -330,23 +319,8 @@ function validateAll(showDetails=true){
   return {ok, wrongWords};
 }
 
-/* Reveal answers */
-function revealAll(){
-  for (const w of words){
-    for (let i=0;i<w.word.length;i++){
-      const r = (w.dir === 'across') ? w.row : w.row + i;
-      const c = (w.dir === 'across') ? w.col + i : w.col;
-      const idx = cellIndex(r,c);
-      const cell = cells[idx];
-      if (cell && cell.el) cell.el.value = w.word[i].toUpperCase();
-    }
-  }
-  document.getElementById('status').textContent = 'Respostas mostradas.';
-}
-
 /* Attach buttons */
 document.getElementById('checkBtn').addEventListener('click', ()=>validateAll());
-document.getElementById('revealBtn').addEventListener('click', ()=>{ if(confirm('Mostrar todas as respostas?')) revealAll(); });
 
 /* initial focus on first non-block cell */
 for (const c of cells){ if(!c.isBlock){ c.el.focus(); break; } }
