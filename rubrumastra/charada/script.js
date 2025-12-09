@@ -21,7 +21,7 @@ function getCookie(cname) {
 
 
 // --- CONFIGURAÇÃO DO CRONÔMETRO ---
-const unlockTime = new Date("2024-12-11T08:00:00-03:00").getTime();
+const unlockTime = new Date("2025-12-11T08:00:00-03:00").getTime();
 
 
 function updateCountdown() {

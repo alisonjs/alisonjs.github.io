@@ -53,20 +53,9 @@
 
 
     <script>
-        const correctHash = "c41abd18e34d10714b732169551dd9087d591ca599d2e805f56059bf18d6c0ee";
-
-        function sha256(str) {
-            return crypto.subtle.digest("SHA-256", new TextEncoder().encode(str))
-                .then(buf => Array.from(new Uint8Array(buf))
-                    .map(x => x.toString(16).padStart(2, '0'))
-                    .join('')
-                );
-        }
-
         document.getElementById("check-btn").onclick = async () => {
             const ans = document.getElementById("final-answer").value.trim().toLowerCase();
-            const ansHash = await sha256(ans);
-            if (ansHash === correctHash) {
+            if (ans === 'casa de praia') {
                 window.location.href = "success.html";
             } else {
                 alert("Resposta incorreta!");
