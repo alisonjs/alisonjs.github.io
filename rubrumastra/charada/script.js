@@ -54,7 +54,7 @@ function updateCountdown() {
 
 window.onload = () => {
     const savedName = getCookie("rubrumastra_player");
-
+    const currentPage = getCookie("current_page");
 
     const nameInput = document.getElementById("player-name");
     const savedNameText = document.getElementById("saved-name");
@@ -74,6 +74,8 @@ window.onload = () => {
         nameInput.classList.add("hidden");
         startBtn.classList.add("hidden");
         continueBtn.classList.remove("hidden");
+    } else {
+        setCookie("current_page", "index.html", 365);
     }
 
 
@@ -86,7 +88,12 @@ window.onload = () => {
 
 
     continueBtn.onclick = () => {
-        window.location.href = "crossword.html";
+        if (currentPage && !window.location.href.includes(currentPage)) {
+            window.location.href = currentPage;
+        } else {
+            setCookie("current_page", "crossword.html", 365);
+            window.location.href = "crossword.html";
+        }
     };
 
 

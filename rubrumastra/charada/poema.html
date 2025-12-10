@@ -53,6 +53,36 @@
 
 
     <script>
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = `${cname}=${cvalue};${expires};path=/`;
+        }
+
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let ca = document.cookie.split(";");
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i].trim();
+                if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+            }
+            return "";
+        }
+
+        window.onload = () => {
+            if (!getCookie("rubrumastra_player")) {
+                window.location.href = "index.html";
+            }
+
+            const currentPage = getCookie("current_page");
+            if (currentPage && !window.location.href.includes(currentPage)) {
+                setCookie('current_page', currentPage);
+                window.location.href = currentPage;
+            }
+        }
+
         document.getElementById("check-btn").onclick = async () => {
             const ans = document.getElementById("final-answer").value.trim().toLowerCase();
             if (ans === 'casa de praia') {
